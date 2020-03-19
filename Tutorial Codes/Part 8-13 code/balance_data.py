@@ -39,7 +39,3 @@ final_data = forwards + lefts + rights
 shuffle(final_data)
 
 np.save('training_data.npy', final_data)
-
-
-
-

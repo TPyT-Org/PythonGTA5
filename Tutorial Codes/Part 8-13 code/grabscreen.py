@@ -1,15 +1,21 @@
+# PEP8 Updates by T_Py_T
+
 # Done by Frannecklp
 
 import cv2
 import numpy as np
-import win32gui, win32ui, win32con, win32api
+import win32gui
+import win32ui
+import win32con
+import win32api
+
 
 def grab_screen(region=None):
 
     hwin = win32gui.GetDesktopWindow()
 
     if region:
-            left,top,x2,y2 = region
+            left, top, x2, y2 = region
             width = x2 - left + 1
             height = y2 - top + 1
     else:
@@ -28,7 +34,7 @@ def grab_screen(region=None):
     
     signedIntsArray = bmp.GetBitmapBits(True)
     img = np.fromstring(signedIntsArray, dtype='uint8')
-    img.shape = (height,width,4)
+    img.shape = (height, width, 4)
 
     srcdc.DeleteDC()
     memdc.DeleteDC()

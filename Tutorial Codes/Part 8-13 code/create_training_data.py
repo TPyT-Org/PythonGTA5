@@ -1,3 +1,5 @@
+# PEP8 Updates by T_Py_T
+
 # create_training_data.py
 
 import numpy as np
@@ -14,8 +16,8 @@ def keys_to_output(keys):
 
     [A,W,D] boolean values.
     '''
-    output = [0,0,0]
-    
+    output = [0, 0, 0]
+
     if 'A' in keys:
         output[0] = 1
     elif 'D' in keys:
@@ -40,8 +42,6 @@ def main():
     for i in list(range(4))[::-1]:
         print(i+1)
         time.sleep(1)
-
-
     paused = False
     while(True):
 
@@ -54,11 +54,11 @@ def main():
             # resize to something a bit more acceptable for a CNN
             keys = key_check()
             output = keys_to_output(keys)
-            training_data.append([screen,output])
-            
+            training_data.append([screen, output])
+
             if len(training_data) % 1000 == 0:
                 print(len(training_data))
-                np.save(file_name,training_data)
+                np.save(file_name, training_data)
 
         keys = key_check()
         if 'T' in keys:
