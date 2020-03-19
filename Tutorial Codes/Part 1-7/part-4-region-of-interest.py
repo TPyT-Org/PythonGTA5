@@ -23,7 +23,6 @@ def process_img(original_image):
 
 
 def main():
-    last_time = time.time()
     while(True):
         screen = np.array(ImageGrab.grab(bbox=(0, 40, 800, 640)))
         new_screen = process_img(screen)
