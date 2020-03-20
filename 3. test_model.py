@@ -15,7 +15,7 @@ GAME_WIDTH = 1920
 GAME_HEIGHT = 1080
 
 how_far_remove = 800
-rs = (20,15)
+rs = (20, 15)
 log_len = 25
 
 motion_req = 800
@@ -30,23 +30,25 @@ choices = deque([], maxlen=5)
 hl_hist = 250
 choice_hist = deque([], maxlen=hl_hist)
 
-w = [1,0,0,0,0,0,0,0,0]
-s = [0,1,0,0,0,0,0,0,0]
-a = [0,0,1,0,0,0,0,0,0]
-d = [0,0,0,1,0,0,0,0,0]
-wa = [0,0,0,0,1,0,0,0,0]
-wd = [0,0,0,0,0,1,0,0,0]
-sa = [0,0,0,0,0,0,1,0,0]
-sd = [0,0,0,0,0,0,0,1,0]
-nk = [0,0,0,0,0,0,0,0,1]
+w = [1, 0, 0, 0, 0, 0, 0, 0, 0]
+s = [0, 1, 0, 0, 0, 0, 0, 0, 0]
+a = [0, 0, 1, 0, 0, 0, 0, 0, 0]
+d = [0, 0, 0, 1, 0, 0, 0, 0, 0]
+wa = [0, 0, 0, 0, 1, 0, 0, 0, 0]
+wd = [0, 0, 0, 0, 0, 1, 0, 0, 0]
+sa = [0, 0, 0, 0, 0, 0, 1, 0, 0]
+sd = [0, 0, 0, 0, 0, 0, 0, 1, 0]
+nk = [0, 0, 0, 0, 0, 0, 0, 0, 1]
 
 t_time = 0.25
+
 
 def straight():
     PressKey(W)
     ReleaseKey(A)
     ReleaseKey(D)
     ReleaseKey(S)
+
 
 def left():
     if random.randrange(0,3) == 1:
@@ -58,6 +60,7 @@ def left():
     ReleaseKey(D)
     #ReleaseKey(S)
 
+
 def right():
     if random.randrange(0,3) == 1:
         PressKey(W)
@@ -66,7 +69,8 @@ def right():
     PressKey(D)
     ReleaseKey(A)
     ReleaseKey(S)
-    
+
+
 def reverse():
     PressKey(S)
     ReleaseKey(A)
@@ -79,27 +83,28 @@ def forward_left():
     PressKey(A)
     ReleaseKey(D)
     ReleaseKey(S)
-    
-    
+
+
 def forward_right():
     PressKey(W)
     PressKey(D)
     ReleaseKey(A)
     ReleaseKey(S)
 
-    
+
 def reverse_left():
     PressKey(S)
     PressKey(A)
     ReleaseKey(W)
     ReleaseKey(D)
 
-    
+
 def reverse_right():
     PressKey(S)
     PressKey(D)
     ReleaseKey(W)
     ReleaseKey(A)
+
 
 def no_keys():
 
@@ -110,7 +115,6 @@ def no_keys():
     ReleaseKey(A)
     ReleaseKey(S)
     ReleaseKey(D)
-    
 
 
 model = googlenet(WIDTH, HEIGHT, 3, LR, output=9)
@@ -118,6 +122,7 @@ MODEL_NAME = ''
 model.load(MODEL_NAME)
 
 print('We have loaded a previous model!!!!')
+
 
 def main():
     last_time = time.time()
@@ -137,7 +142,7 @@ def main():
     t_plus = prev
 
     while(True):
-        
+
         if not paused:
             screen = grab_screen(region=(0,40,GAME_WIDTH,GAME_HEIGHT+40))
             screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
@@ -160,11 +165,11 @@ def main():
             if mode_choice == 0:
                 straight()
                 choice_picked = 'straight'
-                
+
             elif mode_choice == 1:
                 reverse()
                 choice_picked = 'reverse'
-                
+
             elif mode_choice == 2:
                 left()
                 choice_picked = 'left'
@@ -190,7 +195,7 @@ def main():
             motion_log.append(delta_count)
             motion_avg = round(mean(motion_log),3)
             print('loop took {} seconds. Motion: {}. Choice: {}'.format( round(time.time()-last_time, 3) , motion_avg, choice_picked))
-            
+
             if motion_avg < motion_req and len(motion_log) >= log_len:
                 print('WERE PROBABLY STUCK FFS, initiating some evasive maneuvers.')
 
@@ -200,7 +205,7 @@ def main():
                 # 3 = reverse right, turn left out
 
                 quick_choice = random.randrange(0,4)
-                
+
                 if quick_choice == 0:
                     reverse()
                     time.sleep(random.uniform(1,2))
@@ -227,7 +232,7 @@ def main():
 
                 for i in range(log_len-2):
                     del motion_log[0]
-    
+
         keys = key_check()
 
         # p pauses game and can get annoying.
@@ -242,4 +247,5 @@ def main():
                 ReleaseKey(D)
                 time.sleep(1)
 
-main()       
+
+main()     
