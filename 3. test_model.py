@@ -41,15 +41,11 @@ sd = [0, 0, 0, 0, 0, 0, 0, 1, 0]
 nk = [0, 0, 0, 0, 0, 0, 0, 0, 1]
 
 t_time = 0.25
-
-
 def straight():
     PressKey(W)
     ReleaseKey(A)
     ReleaseKey(D)
     ReleaseKey(S)
-
-
 def left():
     if random.randrange(0,3) == 1:
         PressKey(W)
@@ -59,8 +55,6 @@ def left():
     ReleaseKey(S)
     ReleaseKey(D)
     #ReleaseKey(S)
-
-
 def right():
     if random.randrange(0,3) == 1:
         PressKey(W)
