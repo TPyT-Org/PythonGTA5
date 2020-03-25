@@ -1,18 +1,17 @@
 {
-  /*
+  //Linting
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
-  "python.linting.enabled": true
-  */
-
+  "python.linting.enabled": true,
+  //Formatting
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
-  "python.pythonPath": "/usr/local/bin/python",
+  "python.pythonPath": "C:\\Users\\tturner\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
   "python.formatting.provider": "autopep8",
   "python.formatting.autopep8Args": [
     "--max-line-length",
     "70",
     "--aggressive",
     "--aggressive"
-  ]
+  ],
 }

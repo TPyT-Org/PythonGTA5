@@ -2,12 +2,12 @@ import numpy as np
 from grabscreen import grab_screen
 import cv2
 import time
-from directkeys import PressKey,ReleaseKey, W, A, S, D
+from directkeys import PressKey, ReleaseKey, W, A, S, D
 from models import inception_v3 as googlenet
 from getkeys import key_check
 from collections import deque, Counter
 import random
-from statistics import mode,mean
+from statistics import mode, mean
 import numpy as np
 from motion import motion_detection
 
@@ -41,22 +41,28 @@ sd = [0, 0, 0, 0, 0, 0, 0, 1, 0]
 nk = [0, 0, 0, 0, 0, 0, 0, 0, 1]
 
 t_time = 0.25
+
+
 def straight():
     PressKey(W)
     ReleaseKey(A)
     ReleaseKey(D)
     ReleaseKey(S)
+
+
 def left():
-    if random.randrange(0,3) == 1:
+    if random.randrange(0, 3) == 1:
         PressKey(W)
     else:
         ReleaseKey(W)
     PressKey(A)
     ReleaseKey(S)
     ReleaseKey(D)
-    #ReleaseKey(S)
+    # ReleaseKey(S)
+
+
 def right():
-    if random.randrange(0,3) == 1:
+    if random.randrange(0, 3) == 1:
         PressKey(W)
     else:
         ReleaseKey(W)
@@ -102,7 +108,7 @@ def reverse_right():
 
 def no_keys():
 
-    if random.randrange(0,3) == 1:
+    if random.randrange(0, 3) == 1:
         PressKey(W)
     else:
         ReleaseKey(W)
@@ -121,15 +127,15 @@ print('We have loaded a previous model!!!!')
 def main():
     last_time = time.time()
     for i in list(range(4))[::-1]:
-        print(i+1)
+        print(i + 1)
         time.sleep(1)
 
     paused = False
     mode_choice = 0
 
-    screen = grab_screen(region=(0,40,GAME_WIDTH,GAME_HEIGHT+40))
+    screen = grab_screen(region=(0, 40, GAME_WIDTH, GAME_HEIGHT + 40))
     screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
-    prev = cv2.resize(screen, (WIDTH,HEIGHT))
+    prev = cv2.resize(screen, (WIDTH, HEIGHT))
 
     t_minus = prev
     t_now = prev
@@ -138,21 +144,30 @@ def main():
     while(True):
 
         if not paused:
-            screen = grab_screen(region=(0,40,GAME_WIDTH,GAME_HEIGHT+40))
+            screen = grab_screen(
+                region=(
+                    0,
+                    40,
+                    GAME_WIDTH,
+                    GAME_HEIGHT +
+                    40))
             screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
 
             last_time = time.time()
-            screen = cv2.resize(screen, (WIDTH,HEIGHT))
+            screen = cv2.resize(screen, (WIDTH, HEIGHT))
 
-            delta_count_last = motion_detection(t_minus, t_now, t_plus)
+            delta_count_last = motion_detection(
+                t_minus, t_now, t_plus)
 
             t_minus = t_now
             t_now = t_plus
             t_plus = screen
-            t_plus = cv2.blur(t_plus,(4,4))
+            t_plus = cv2.blur(t_plus, (4, 4))
 
-            prediction = model.predict([screen.reshape(WIDTH,HEIGHT,3)])[0]
-            prediction = np.array(prediction) * np.array([4.5, 0.1, 0.1, 0.1,  1.8,   1.8, 0.5, 0.5, 0.2])
+            prediction = model.predict(
+                [screen.reshape(WIDTH, HEIGHT, 3)])[0]
+            prediction = np.array(
+                prediction) * np.array([4.5, 0.1, 0.1, 0.1, 1.8, 1.8, 0.5, 0.5, 0.2])
 
             mode_choice = np.argmax(prediction)
 
@@ -187,44 +202,47 @@ def main():
                 choice_picked = 'nokeys'
 
             motion_log.append(delta_count)
-            motion_avg = round(mean(motion_log),3)
-            print('loop took {} seconds. Motion: {}. Choice: {}'.format( round(time.time()-last_time, 3) , motion_avg, choice_picked))
+            motion_avg = round(mean(motion_log), 3)
+            print('loop took {} seconds. Motion: {}. Choice: {}'.format(
+                round(time.time() - last_time, 3), motion_avg, choice_picked))
 
             if motion_avg < motion_req and len(motion_log) >= log_len:
-                print('WERE PROBABLY STUCK FFS, initiating some evasive maneuvers.')
+                print(
+                    'WERE PROBABLY STUCK FFS, /n',
+                    'initiating some evasive maneuvers.')
 
                 # 0 = reverse straight, turn left out
                 # 1 = reverse straight, turn right out
                 # 2 = reverse left, turn right out
                 # 3 = reverse right, turn left out
 
-                quick_choice = random.randrange(0,4)
+                quick_choice = random.randrange(0, 4)
 
                 if quick_choice == 0:
                     reverse()
-                    time.sleep(random.uniform(1,2))
+                    time.sleep(random.uniform(1, 2))
                     forward_left()
-                    time.sleep(random.uniform(1,2))
+                    time.sleep(random.uniform(1, 2))
 
                 elif quick_choice == 1:
                     reverse()
-                    time.sleep(random.uniform(1,2))
+                    time.sleep(random.uniform(1, 2))
                     forward_right()
-                    time.sleep(random.uniform(1,2))
+                    time.sleep(random.uniform(1, 2))
 
                 elif quick_choice == 2:
                     reverse_left()
-                    time.sleep(random.uniform(1,2))
+                    time.sleep(random.uniform(1, 2))
                     forward_right()
-                    time.sleep(random.uniform(1,2))
+                    time.sleep(random.uniform(1, 2))
 
                 elif quick_choice == 3:
                     reverse_right()
-                    time.sleep(random.uniform(1,2))
+                    time.sleep(random.uniform(1, 2))
                     forward_left()
-                    time.sleep(random.uniform(1,2))
+                    time.sleep(random.uniform(1, 2))
 
-                for i in range(log_len-2):
+                for i in range(log_len - 2):
                     del motion_log[0]
 
         keys = key_check()
@@ -242,4 +260,4 @@ def main():
                 time.sleep(1)
 
 
-main()     
+main()

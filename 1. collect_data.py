@@ -63,7 +63,7 @@ def main(file_name, starting_value):
     starting_value = starting_value
     training_data = []
     for i in list(range(4))[::-1]:
-        print(i+1)
+        print(i + 1)
         time.sleep(1)
 
     # last_time = time.time()
@@ -73,7 +73,6 @@ def main(file_name, starting_value):
 
         if not paused:
             screen = grab_screen(region=(0, 40, 1920, 1120))
-            # last_time = time.time()
             # resize to something a bit more acceptable for a CNN
             screen = cv2.resize(screen, (480, 270))
             # run a color convert:
@@ -91,7 +90,8 @@ def main(file_name, starting_value):
                     print('SAVED')
                     training_data = []
                     starting_value += 1
-                    file_name = 'X:/pygta5/phase7-larger-color/training_data-{}.npy'.format(starting_value)
+                    file_name = 'C:/Users/tturner/Desktop/Sentdex/pygta5-master/Training_Data/training_data-{}.npy'.format(
+                        starting_value)
 
         keys = key_check()
         if 'T' in keys:
